@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🃏 Thoát khỏi Mê Cung Triết Học</title>
+    <link href="image/1.png" rel="icon" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        /* Stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Main Container */
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .game-header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .game-title {
+            font-family: 'Cinzel', serif;
+            font-size:             font-family: inherit;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .game-subtitle {
+            color: #a8a8a8;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a0a2e;
+        }
+
+        .nav-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .room-counter {
+            font-family: inherit;
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+
+        .score-display {
+            display: flex;
+            gap: 20px;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+        }
+
+        .score-item.correct { color: #4ade80; }
+        .score-item.wrong { color: #f87171; }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22d3ee, #818cf8);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        /* Cards Area */
+        .cards-area {
+            margin-bottom: 30px;
+        }
+
+        .cards-instruction {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #fbbf24;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 200px;
+            height: 280px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover:not(.flipped):not(.disabled) {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #2d1b4e, #1a0a2e);
+            border: 3px solid #8b5cf6;
+            z-index: 1;
+        }
+
+        .card-back::before {
+            content: '?';
+            font-size: 4rem;
+            color: #8b5cf6;
+            font-family: inherit;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .card-back .card-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                repeating-linear-gradient(45deg, #8b5cf6 0, #8b5cf6 1px, transparent 1px, transparent 10px),
+                repeating-linear-gradient(-45deg, #8b5cf6 0, #8b5cf6 1px, transparent 1px, transparent 10px);
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, #1e3a5f, #16213e);
+            border: 3px solid #22d3ee;
+            transform: rotateY(180deg);
+        }
+
+        .card-front.bomb-card {
+            background: linear-gradient(145deg, #4a1c1c, #2d0a0a);
+            border-color: #ef4444;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-topic {
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #e8e8e8;
+        }
+
+        .bomb-card .card-icon {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Lockout Overlay */
+        .lockout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            flex-direction: column;
+        }
+
+        .lockout-overlay.active {
+            display: flex;
+        }
+
+        .lockout-content {
+            text-align: center;
+        }
+
+        .lockout-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .lockout-message {
+            font-size: 1.5rem;
+            color: #f87171;
+            margin-bottom: 20px;
+        }
+
+        .lockout-timer {
+            font-size: 4rem;
+            font-family: inherit;
+            color: #fbbf24;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        }
+
+        /* Question Area */
+        .question-area {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: none;
+        }
+
+        .question-area.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-topic {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .question-number {
+            color: #a8a8a8;
+            font-size: 0.95rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #f8f8f8;
+        }
+
+        .answers-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .answer-option:hover:not(.disabled):not(.selected) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #8b5cf6;
+            transform: translateX(5px);
+        }
+
+        .answer-option.selected {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .answer-option.correct {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .answer-option.wrong {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.2);
+        }
+
+        .answer-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .answer-label {
+            background: rgba(255, 255, 255, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .answer-text {
+            line-height: 1.6;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 25px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Floating Chatbot - Bottom Right */
+        .chatbot-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.7);
+        }
+
+        .chatbot-toggle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .chatbot-toggle .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #1a0a2e;
+            animation: pulse-dot 1.5s infinite;
+            display: none;
+        }
+
+        .chatbot-toggle .notification-dot.active {
+            display: block;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            background: rgba(26, 10, 46, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .chatbot-window.open {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.3));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chatbot-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+        }
+
+        .chatbot-header-info {
+            flex: 1;
+        }
+
+        .chatbot-name {
+            font-family: inherit;
+            font-size: 1rem;
+            color: #ffd700;
+        }
+
+        .chatbot-status {
+            font-size: 0.75rem;
+            color: #4ade80;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: #a8a8a8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .chatbot-close:hover {
+            color: #fff;
+        }
+
+        .chat-messages {
+            flex: 1;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 3px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-message .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .chat-message .content {
+            background: rgba(139, 92, 246, 0.2);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border-top-left-radius: 4px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            max-width: 230px;
+            color: #e8e8e8;
+        }
+
+        /* Toast Notifications - Left of chatbot icon */
+        .toast-container {
+            position: fixed;
+            bottom: 25px;
+            right: 90px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-message {
+            background: rgba(26, 10, 46, 0.95);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 12px;
+            padding: 12px 16px;
+            max-width: 280px;
+            color: #e8e8e8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            animation: toastSlideIn 0.3s ease, toastFadeOut 0.5s ease 3.5s forwards;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .toast-message .toast-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .toast-message .toast-content {
+            flex: 1;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toastFadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .start-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .start-description {
+            font-size: 1.2rem;
+            color: #a8a8a8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .start-btn {
+            padding: 20px 60px;
+            font-size: 1.4rem;
+            font-family: inherit;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            border: none;
+            border-radius: 50px;
+            color: #1a0a2e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Victory Screen */
+        .victory-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .victory-screen.active {
+            display: block;
+        }
+
+        .victory-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .victory-title {
+            font-family: inherit;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ffd700, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .victory-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 15px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-family: inherit;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a8a8a8;
+        }
+
+        .ai-summary {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 700px;
+            text-align: left;
+        }
+
+        .ai-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+        .ai-summary-content {
+            line-height: 1.8;
+            color: #d1d5db;
+        }
+
+        .play-again-btn {
+            padding: 18px 50px;
+            font-size: 1.2rem;
+            font-family: inherit;
+infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-title { font-size: 1.8rem; }
+            .card { width: 150px; height: 210px; }
+            .cards-container { gap: 15px; }
+            .question-text { font-size: 1.1rem; }
+            .victory-stats { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Lockout Overlay -->
+    <div class="lockout-overlay" id="lockoutOverlay">
+        <div class="lockout-content">
+            <div class="lockout-icon" id="lockoutIcon">💣</div>
+            <div class="lockout-message" id="lockoutMessage">Bạn đã chọn phải bom!</div>
+            <div class="lockout-timer" id="lockoutTimer">10</div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">🃏 Thoát khỏi Mê Cung Triết Học</h1>
+            <p class="game-subtitle">Lật bài, trả lời đúng, và thoát khỏi mê cung tri thức!</p>
+            <div class="nav-links">
+                <a href="../thidau/" class="nav-btn primary">🏆 Thi Đấu</a>
+                <a href="../" class="nav-btn secondary">💬 Chatbot</a>
+            </div>
+        </header>
+
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <div class="start-icon">🏛️</div>
+            <p class="start-description">
+                Chào mừng bạn đến với Mê Cung Triết Học! Trong mỗi căn phòng, 
+                bạn sẽ thấy 3 lá bài úp. Hai lá là chủ đề triết học, một lá là bom!
+                <br><br>
+                🎯 Trả lời đúng 10 câu hỏi để thoát khỏi mê cung
+                <br>💣 Chọn phải bom = chờ 10 giây
+                <br>❌ Trả lời sai = chờ 10 giây, rồi thử lại
+            </p>
+            <button class="start-btn" onclick="startGame()">Bắt Đầu Hành Trình</button>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" style="display: none;">
+            <!-- Progress -->
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span class="room-counter">🚪 Phòng <span id="roomNumber">1</span></span>
+                    <div class="score-display">
+                        <span class="score-item correct">✓ Đúng: <span id="correctCount">0</span></span>
+                        <span class="score-item wrong">✗ Sai: <span id="wrongCount">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Cards Area -->
+            <div class="cards-area" id="cardsArea">
+                <p class="cards-instruction">🎴 Chọn một lá bài để lật...</p>
+                <div class="cards-container" id="cardsContainer">
+                    <!-- Cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="question-area" id="questionArea">
+                <div class="question-header">
+                    <span class="question-topic" id="questionTopic">Chủ đề</span>
+                    <span class="question-number" id="questionNumber">Câu 1/10</span>
+                </div>
+                <p class="question-text" id="questionText">Đang tải câu hỏi...</p>
+                <div class="answers-grid" id="answersGrid">
+                    <!-- Answers will be generated here -->
+                </div>
+                <button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Xác Nhận Đáp Án</button>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div class="victory-screen" id="victoryScreen">
+            <div class="victory-icon">🏆</div>
+            <h2 class="victory-title">Chúc Mừng! Bạn Đã Thoát Khỏi Mê Cung!</h2>
+            <div class="victory-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="finalCorrect">0</div>
+                    <div class="stat-label">Câu đúng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="finalWrong">0</div>
+                    <div class="stat-label">Câu sai</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="finalRooms">0</div>
+                    <div class="stat-label">Phòng đã qua</div>
+                </div>
+            </div>
+            <div class="ai-summary" id="aiSummary">
+                <div class="ai-summary-header">
+                    <span>🤖</span>
+                    <span>Nhận xét từ Triết học AI</span>
+                </div>
+                <div class="ai-summary-content" id="aiSummaryContent">
+                    Đang phân tích hành trình của bạn...
+                </div>
+            </div>
+            <button class="play-again-btn" onclick="location.reload()">🔄 Chơi Lại</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Floating Chatbot - Bottom Right -->
+    <div class="chatbot-float">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <img src="image/1.png" alt="AI" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="chatbot-header-info">
+                    <div class="chatbot-name">Triết học AI</div>
+                    <div class="chatbot-status">● Đang hỗ trợ</div>
+                </div>
+                <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message">
+                    <img src="image/1.png" alt="AI" class="avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                    <div class="content">
+                        Chào bạn! Tôi là Triết học AI. Hãy lật một lá bài để bắt đầu. Nếu trả lời sai, tôi sẽ gợi ý để giúp bạn tìm ra đáp án đúng nhé! 🎴
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-toggle" onclick="toggleChatbot()">
+            <img src="image/1.png" alt="AI" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+            <span class="notification-dot" id="notificationDot"></span>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            sessionId: null,
+            roomNumber: 1,
+            correctCount: 0,
+            wrongCount: 0,
+            currentQuestion: null,
+            selectedAnswer: null,
+            topicsAnswered: [],
+            isLocked: false,
+            requiredCorrect: 10
+        };
+
+        // API Base URL
+        const API_BASE = 'http://localhost:5002/';
+
+        // Topics with icons (matching CSV topics exactly)
+        const topics = [
+            { name: 'Vật chất & Ý thức', icon: '🧠' },
+            { name: 'Nguồn gốc & bản chất nhận thức', icon: '👁️' },
+            { name: 'Chân lý', icon: '✨' },
+            { name: 'Các quy luật biện chứng', icon: '🔄' },
+            { name: 'Phạm trù phép biện chứng', icon: '📊' },
+            { name: 'Xã hội, giai cấp, nhà nước', icon: '🏛️' }
+        ];
+
+        // Generate stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = star.style.width;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Start Game
+        async function startGame() {
+            try {
+                const response = await fetch(API_BASE + '/api/game/maze/start', { method: 'POST' });
+                const data = await response.json();
+                
+                // API returns session_id if successful
+                if (data.session_id) {
+                    gameState.sessionId = data.session_id;
+                    document.getElementById('startScreen').style.display = 'none';
+                    document.getElementById('gameArea').style.display = 'block';
+                    generateCards();
+                } else {
+                    alert('Không thể bắt đầu game. Vui lòng thử lại!');
+                }
+            } catch (error) {
+                console.error('Failed to start game:', error);
+                alert('Không thể kết nối server. Vui lòng thử lại!');
+            }
+        }
+
+        // Generate 3 Cards (2 topics + 1 bomb)
+        function generateCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            // Randomly select 2 topics
+            const shuffledTopics = [...topics].sort(() => Math.random() - 0.5);
+            const selectedTopics = shuffledTopics.slice(0, 2);
+
+            // Create card data: 2 topics + 1 bomb
+            const cardData = [
+                { type: 'topic', ...selectedTopics[0] },
+                { type: 'topic', ...selectedTopics[1] },
+                { type: 'bomb', name: 'BOM!', icon: '💣' }
+            ];
+
+            // Shuffle cards
+            cardData.sort(() => Math.random() - 0.5);
+
+            // Create card elements
+            cardData.forEach((data, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.type = data.type;
+                card.dataset.topic = data.name;
+                card.dataset.icon = data.icon;
+                card.onclick = () => flipCard(card, index);
+
+                card.innerHTML = `
+                    <div class="card-face card-back">
+                        <div class="card-pattern"></div>
+                    </div>
+                    <div class="card-face card-front ${data.type === 'bomb' ? 'bomb-card' : ''}">
+                        <div class="card-icon">${data.icon}</div>
+                        <div class="card-topic">${data.name}</div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Flip Card
+        async function flipCard(card, index) {
+            if (gameState.isLocked || card.classList.contains('flipped') || card.classList.contains('disabled')) {
+                return;
+            }
+
+            // Flip this card first to show what it is
+            card.classList.add('flipped');
+
+            const cardType = card.dataset.type;
+            const topic = card.dataset.topic;
+            const icon = card.dataset.icon;
+
+            if (cardType === 'bomb') {
+                // Hit bomb - wait for flip animation then show lockout
+                setTimeout(() => {
+                    // Disable all cards
+                    document.querySelectorAll('.card').forEach(c => c.classList.add('disabled'));
+                    addChatMessage(`💣 Ôi không! Bạn đã lật phải lá BOM! Đợi 10 giây rồi chọn lá khác nhé!`);
+                    showLockout('bomb');
+                }, 600); // Wait for flip animation
+            } else {
+                // Topic selected - wait for flip animation then proceed
+                setTimeout(async () => {
+                    // Disable all cards
+                    document.querySelectorAll('.card').forEach(c => c.classList.add('disabled'));
+                    addChatMessage(`${icon} Bạn đã chọn chủ đề: <strong>${topic}</strong>. Đang tải câu hỏi...`);
+                    // Fetch question
+                    await fetchQuestion(topic);
+                }, 600); // Wait for flip animation
+            }
+        }
+
+        // Show Lockout Overlay
+        function showLockout(type, message = null) {
+            gameState.isLocked = true;
+            const overlay = document.getElementById('lockoutOverlay');
+            const icon = document.getElementById('lockoutIcon');
+            const msg = document.getElementById('lockoutMessage');
+            const timer = document.getElementById('lockoutTimer');
+
+            if (type === 'bomb') {
+                icon.textContent = '💣';
+                msg.textContent = 'Bạn đã chọn phải bom!';
+                // Không cần addChatMessage ở đây vì đã thông báo trong flipCard
+            } else {
+                icon.textContent = '❌';
+                msg.textContent = message || 'Đáp án chưa đúng!';
+            }
+
+            overlay.classList.add('active');
+            let seconds = 10;
+            timer.textContent = seconds;
+
+            const countdown = setInterval(() => {
+                seconds--;
+                timer.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                    overlay.classList.remove('active');
+                    gameState.isLocked = false;
+
+                    if (type === 'bomb') {
+                        // Reset cards for new selection (but keep bomb flipped)
+                        document.querySelectorAll('.card').forEach(c => {
+                            if (c.dataset.type !== 'bomb') {
+                                c.classList.remove('disabled');
+                            }
+                        });
+                    }
+                    // For wrong answer, the question stays visible for retry
+                }
+            }, 1000);
+        }
+
+        // Fetch Question from API
+        async function fetchQuestion(topic) {
+            document.getElementById('cardsArea').style.display = 'none';
+            document.getElementById('loadingSpinner').classList.add('active');
+
+            try {
+                const response = await fetch(API_BASE + '/api/game/maze/question', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        session_id: gameState.sessionId,
+                        topic: topic
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    gameState.currentQuestion = data;
+                    displayQuestion(data, topic);
+                } else {
+                    addChatMessage('Không tìm thấy câu hỏi cho chủ đề này. Hãy thử chủ đề khác! 🔍');
+                    resetToCards();
+                }
+            } catch (error) {
+                console.error('Failed to fetch question:', error);
+                addChatMessage('Có lỗi xảy ra. Hãy thử lại nhé! 🔧');
+                resetToCards();
+            }
+        }
+
+        // Display Question
+        function displayQuestion(data, topic) {
+            document.getElementById('loadingSpinner').classList.remove('active');
+            
+            const questionArea = document.getElementById('questionArea');
+            document.getElementById('questionTopic').textContent = topic;
+            document.getElementById('questionNumber').textContent = `Câu ${gameState.correctCount + 1}/${gameState.requiredCorrect}`;
+            document.getElementById('questionText').textContent = data.question;
+
+            // Build answers
+            const answersGrid = document.getElementById('answersGrid');
+            answersGrid.innerHTML = '';
+            
+            const options = ['A', 'B', 'C', 'D'];
+            options.forEach(opt => {
+                const answerText = data[opt];
+                if (answerText) {
+                    const div = document.createElement('div');
+                    div.className = 'answer-option';
+                    div.dataset.answer = opt;
+                    div.onclick = () => selectAnswer(opt);
+                    div.innerHTML = `
+                        <span class="answer-label">${opt}</span>
+                        <span class="answer-text">${answerText}</span>
+                    `;
+                    answersGrid.appendChild(div);
+                }
+            });
+
+            gameState.selectedAnswer = null;
+            document.getElementById('submitBtn').disabled = true;
+            questionArea.classList.add('active');
+        }
+
+        // Select Answer
+        function selectAnswer(answer) {
+            if (gameState.isLocked) return;
+
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            const selected = document.querySelector(`.answer-option[data-answer="${answer}"]`);
+            if (selected) {
+                selected.classList.add('selected');
+                gameState.selectedAnswer = answer;
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        // Submit Answer
+        async function submitAnswer() {
+            if (!gameState.selectedAnswer || gameState.isLocked) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Nếu đã trả lời đúng và bấm "Tiếp tục"
+            if (submitBtn.dataset.nextRoom === 'true') {
+                gameState.roomNumber++;
+                nextRoom();
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang kiểm tra...';
+
+            // Disable answer options
+            document.querySelectorAll('.answer-option').forEach(opt => {
+                opt.classList.add('disabled');
+            });
+
+            try {
+                const response = await fetch(API_BASE + '/api/game/maze/answer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: gameState.sessionId,
+                        qid: gameState.currentQuestion.qid,
+                        answer: gameState.selectedAnswer
+                    })
+                });
+
+                const data = await response.json();
+                const selectedOpt = document.querySelector(`.answer-option[data-answer="${gameState.selectedAnswer}"]`);
+
+                // Sử dụng field "correct" từ API (không phải "is_correct")
+                if (data.correct) {
+                    // Correct answer
+                    selectedOpt.classList.add('correct');
+                    gameState.correctCount++;
+                    gameState.topicsAnswered.push(gameState.currentQuestion.topic || 'unknown');
+                    updateProgress();
+
+                    addChatMessage('🎉 Tuyệt vời! Đáp án chính xác! Bạn đang tiến gần hơn đến lối thoát!');
+
+                    if (gameState.correctCount >= gameState.requiredCorrect) {
+                        // Victory!
+                        submitBtn.textContent = '🏆 Hoàn thành!';
+                        submitBtn.disabled = true;
+                        setTimeout(() => showVictory(), 1500);
+                    } else {
+                        // Đổi nút thành "Tiếp tục" để sang phòng mới
+                        submitBtn.textContent = '➡️ Tiếp Tục';
+                        submitBtn.disabled = false;
+                        submitBtn.dataset.nextRoom = 'true';
+                    }
+                } else {
+                    // Wrong answer - KHÔNG hiển thị đáp án đúng
+                    selectedOpt.classList.add('wrong');
+                    gameState.wrongCount++;
+                    updateProgress();
+
+                    // Show AI hint từ chatbot
+                    if (data.hint || data.gatekeeper) {
+                        addChatMessage('💡 ' + (data.hint || data.gatekeeper));
+                    } else {
+                        addChatMessage('💡 Hãy suy nghĩ lại nhé! Xem xét kỹ từng đáp án.');
+                    }
+
+                    // Show lockout, then retry
+                    showLockout('wrong', 'Đáp án chưa đúng! Hãy suy nghĩ lại...');
+
+                    // After lockout, allow retry
+                    setTimeout(() => {
+                        // Reset answer options for retry
+                        document.querySelectorAll('.answer-option').forEach(opt => {
+                            opt.classList.remove('selected', 'wrong', 'disabled');
+                        });
+                        gameState.selectedAnswer = null;
+                        submitBtn.textContent = 'Xác Nhận Đáp Án';
+                        submitBtn.disabled = true;
+                        submitBtn.dataset.nextRoom = 'false';
+                    }, 10000);
+                }
+            } catch (error) {
+                console.error('Failed to submit answer:', error);
+                addChatMessage('Có lỗi xảy ra khi kiểm tra đáp án. Hãy thử lại! 🔧');
+                submitBtn.textContent = 'Xác Nhận Đáp Án';
+                submitBtn.disabled = false;
+                document.querySelectorAll('.answer-option').forEach(opt => {
+                    opt.classList.remove('disabled');
+                });
+            }
+        }
+
+        // Update Progress
+        function updateProgress() {
+            document.getElementById('roomNumber').textContent = gameState.roomNumber;
+            document.getElementById('correctCount').textContent = gameState.correctCount;
+            document.getElementById('wrongCount').textContent = gameState.wrongCount;
+            
+            const progress = (gameState.correctCount / gameState.requiredCorrect) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Next Room
+        function nextRoom() {
+            document.getElementById('roomNumber').textContent = gameState.roomNumber;
+            document.getElementById('questionArea').classList.remove('active');
+            document.getElementById('cardsArea').style.display = 'block';
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Xác Nhận Đáp Án';
+            submitBtn.dataset.nextRoom = 'false';
+            submitBtn.disabled = true;
+            
+            addChatMessage(`🚪 Phòng ${gameState.roomNumber}! Hãy lật một lá bài mới nhé!`);
+            generateCards();
+        }
+
+        // Reset to Cards (error recovery)
+        function resetToCards() {
+            document.getElementById('loadingSpinner').classList.remove('active');
+            document.getElementById('cardsArea').style.display = 'block';
+            document.querySelectorAll('.card').forEach(c => {
+                if (!c.classList.contains('flipped')) {
+                    c.classList.remove('disabled');
+                }
+            });
+        }
+
+        // Toggle Chatbot Window
+        function toggleChatbot() {
+            const chatWindow = document.getElementById('chatbotWindow');
+            const notificationDot = document.getElementById('notificationDot');
+            
+            if (chatWindow.classList.contains('open')) {
+                chatWindow.classList.remove('open');
+            } else {
+                chatWindow.classList.add('open');
+                notificationDot.classList.remove('active');
+                // Scroll to bottom
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // Show Toast Notification (left of chatbot icon)
+        function showToast(message) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            // Strip HTML tags for toast (keep it simple)
+            const plainText = message.replace(/<[^>]*>/g, '');
+            toast.innerHTML = `
+                <img src="image/1.png" alt="AI" class="toast-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="toast-content">${plainText}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Remove toast after 4 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Add Chat Message
+        function addChatMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatWindow = document.getElementById('chatbotWindow');
+            const notificationDot = document.getElementById('notificationDot');
+            
+            const div = document.createElement('div');
+            div.className = 'chat-message';
+            div.innerHTML = `
+                <img src="image/1.png" alt="AI" class="avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="content">${message}</div>
+            `;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Show notification dot if chat window is closed
+            if (!chatWindow.classList.contains('open')) {
+                notificationDot.classList.add('active');
+                // Also show toast notification
+                showToast(message);
+            }
+        }
+
+        // Show Victory Screen
+        async function showVictory() {
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('victoryScreen').classList.add('active');
+            
+            document.getElementById('finalCorrect').textContent = gameState.correctCount;
+            document.getElementById('finalWrong').textContent = gameState.wrongCount;
+            document.getElementById('finalRooms').textContent = gameState.roomNumber;
+
+            // Get AI summary
+            try {
+                const topicsSummary = gameState.topicsAnswered.join(', ');
+                const response = await fetch(API_BASE + '/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Người chơi vừa hoàn thành trò chơi Mê Cung Triết Học với ${gameState.correctCount} câu đúng và ${gameState.wrongCount} câu sai. Các chủ đề đã trả lời: ${topicsSummary}. Hãy viết một đoạn nhận xét ngắn gọn (3-4 câu) về hành trình học triết học của họ, khích lệ và gợi ý họ tìm hiểu thêm về triết học.`,
+                        freestyle_token: true
+                    })
+                });
+
+                const data = await response.json();
+                if (data.response) {
+                    document.getElementById('aiSummaryContent').textContent = data.response;
+                }
+            } catch (error) {
+                document.getElementById('aiSummaryContent').textContent = 
+                    `Chúc mừng bạn đã hoàn thành hành trình! Với ${gameState.correctCount} câu trả lời đúng, bạn đã chứng minh được sự hiểu biết sâu sắc về triết học. Hãy tiếp tục khám phá những câu hỏi lớn của cuộc sống nhé! 🌟`;
+            }
+        }
+
+        // Initialize
+        generateStars();
+    </script>
+</body>
+</html>
