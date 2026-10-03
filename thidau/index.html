@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Thi Đấu Mê Cung Triết Học</title>
+    <link href="image/1.png" rel="icon" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .game-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #ffd700, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .nav-btn {
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #4ade80, #22d3ee);
+            color: #1a0a2e;
+        }
+
+        .nav-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Menu Screen */
+        .menu-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .menu-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .menu-description {
+            font-size: 1.1rem;
+            color: #a8a8a8;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .menu-btn {
+            width: 300px;
+            padding: 25px;
+            font-size: 1.2rem;
+            font-family: 'Cinzel', serif;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn.create {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 87, 108, 0.2));
+            color: #fbbf24;
+            border-color: rgba(251, 191, 36, 0.5);
+        }
+
+        .menu-btn.join {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.2), rgba(34, 211, 238, 0.2));
+            color: #4ade80;
+            border-color: rgba(74, 222, 128, 0.5);
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .menu-btn small {
+            font-size: 0.8rem;
+            color: #a8a8a8;
+            font-family: 'Philosopher', serif;
+        }
+
+        /* Session Reconnect Banner */
+        .reconnect-banner {
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.2), rgba(245, 87, 108, 0.2));
+            border: 1px solid rgba(251, 191, 36, 0.5);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .reconnect-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .reconnect-info strong {
+            color: #fbbf24;
+        }
+
+        .reconnect-info small {
+            color: #a8a8a8;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .reconnect-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a0a2e;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .reconnect-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .dismiss-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #a8a8a8;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Form Screen */
+        .form-screen {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .form-screen h2 {
+            text-align: center;
+            color: #ffd700;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a8a8a8;
+            font-size: 14px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #8b5cf6;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .input-group input.code-input {
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 8px;
+            font-size: 28px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #a8a8a8;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        /* Room Display */
+        .room-info {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .room-info small {
+            color: #a8a8a8;
+            font-size: 14px;
+        }
+
+        .room-code {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            letter-spacing: 10px;
+            margin: 15px 0;
+            font-family: 'Cinzel', serif;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .room-name {
+            font-size: 1.2rem;
+            color: #8b5cf6;
+            margin-bottom: 10px;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        #qrcode canvas {
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+        }
+
+        /* Player List */
+        .player-section h3 {
+            color: #a8a8a8;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .player-list {
+            max-height: 250px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .player-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .player-item:last-child {
+            border-bottom: none;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .player-name {
+            flex: 1;
+            color: #fff;
+        }
+
+        .host-badge {
+            background: linear-gradient(45deg, #ffd700, #ff6b6b);
+            color: #1a0a2e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .player-badge {
+            background: linear-gradient(45deg, #4ade80, #22d3ee);
+            color: #1a0a2e;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .ready-badge {
+            background: #4ade80;
+            color: #1a0a2e;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+        }
+
+        .waiting-text {
+            text-align: center;
+            color: #a8a8a8;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Host Control Panel */
+        .host-control-panel {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .game-timer-big {
+            text-align: center;
+            font-size: 4rem;
+            font-family: 'Cinzel', serif;
+            color: #fbbf24;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+        }
+
+        .game-timer-big.warning {
+            color: #ef4444;
+            animation: pulse-timer 1s infinite;
+        }
+
+        @keyframes pulse-timer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Live Scoreboard */
+        .live-scoreboard {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin: 20px 0;
+        }
+
+        .scoreboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scoreboard-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4ade80;
+            font-size: 0.9rem;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: live-pulse 1.5s infinite;
+        }
+
+        @keyframes live-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        .scoreboard-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .scoreboard-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .scoreboard-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .scoreboard-item.finished {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .scoreboard-rank {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .scoreboard-rank.gold { background: linear-gradient(135deg, #ffd700, #ff6b6b); color: #1a0a2e; }
+        .scoreboard-rank.silver { background: linear-gradient(135deg, #c0c0c0, #808080); color: #1a0a2e; }
+        .scoreboard-rank.bronze { background: linear-gradient(135deg, #cd7f32, #8b4513); color: white; }
+        .scoreboard-rank.normal { background: rgba(255, 255, 255, 0.1); color: #a8a8a8; }
+
+        .scoreboard-player {
+            flex: 1;
+        }
+
+        .scoreboard-player-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .scoreboard-player-status {
+            font-size: 0.85rem;
+            color: #fbbf24;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .scoreboard-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .scoreboard-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .scoreboard-item.finished .scoreboard-progress-fill {
+            background: linear-gradient(90deg, #ffd700, #4ade80);
+        }
+
+        .scoreboard-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stat-correct {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .stat-wrong {
+            color: #f87171;
+        }
+
+        .stat-time {
+            color: #fbbf24;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Progress */
+        .progress-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .room-counter {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #ffd700;
+        }
+
+        .score-display {
+            display: flex;
+            gap: 15px;
+        }
+
+        .score-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .score-item.correct { color: #4ade80; }
+        .score-item.wrong { color: #f87171; }
+
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fbbf24;
+            font-family: 'Cinzel', serif;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #22d3ee, #818cf8);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        /* Cards */
+        .cards-area {
+            margin-bottom: 30px;
+        }
+
+        .cards-instruction {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #fbbf24;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 180px;
+            height: 250px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover:not(.flipped):not(.disabled) {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-back {
+            background: linear-gradient(145deg, #2d1b4e, #1a0a2e);
+            border: 3px solid #8b5cf6;
+        }
+
+        .card-back::before {
+            content: '?';
+            font-size: 4rem;
+            color: #8b5cf6;
+            font-family: 'Cinzel', serif;
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, #1e3a5f, #16213e);
+            border: 3px solid #22d3ee;
+            transform: rotateY(180deg);
+        }
+
+        .card-front.bomb-card {
+            background: linear-gradient(145deg, #4a1c1c, #2d0a0a);
+            border-color: #ef4444;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-topic {
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .bomb-card .card-icon {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Lockout Overlay */
+        .lockout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            flex-direction: column;
+        }
+
+        .lockout-overlay.active {
+            display: flex;
+        }
+
+        .lockout-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+        }
+
+        .lockout-message {
+            font-size: 1.5rem;
+            color: #f87171;
+            margin-bottom: 20px;
+        }
+
+        .lockout-timer {
+            font-size: 4rem;
+            font-family: 'Cinzel', serif;
+            color: #fbbf24;
+        }
+
+        /* Question Area */
+        .question-area {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: none;
+        }
+
+        .question-area.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-topic {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .answers-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .answer-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .answer-option:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #8b5cf6;
+        }
+
+        .answer-option.selected {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .answer-option.correct {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .answer-option.wrong {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.2);
+        }
+
+        .answer-option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .answer-label {
+            background: rgba(255, 255, 255, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .submit-btn.next-room {
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+        }
+
+        /* Rankings */
+        .rankings-screen {
+            text-align: center;
+        }
+
+        .rankings-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .podium-place {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .podium-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .podium-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .podium-stats {
+            font-size: 12px;
+            color: #a8a8a8;
+        }
+
+        .podium-block {
+            width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+            margin-top: 10px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .place-1 .podium-block {
+            height: 100px;
+            background: linear-gradient(135deg, #ffd700, #ff6b6b);
+        }
+        .place-1 .podium-avatar { border-color: #ffd700; }
+
+        .place-2 .podium-block {
+            height: 70px;
+            background: linear-gradient(135deg, #c0c0c0, #808080);
+        }
+
+        .place-3 .podium-block {
+            height: 50px;
+            background: linear-gradient(135deg, #cd7f32, #8b4513);
+        }
+
+        .full-rankings {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .rank-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 15px;
+        }
+
+        .rank-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-number {
+            width: 30px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .rank-score {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .rank-time {
+            color: #a8a8a8;
+            font-size: 14px;
+        }
+
+        /* Loading */
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .loading-spinner.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 215, 0, 0.2);
+            border-top-color: #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications - Left of chatbot icon */
+        .toast-container {
+            position: fixed;
+            bottom: 25px;
+            right: 90px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(26, 10, 46, 0.95);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: #e8e8e8;
+            animation: toastIn 0.3s ease, toastOut 0.5s ease 3s forwards;
+        }
+
+        .toast.success { border-left: 4px solid #4ade80; }
+        .toast.error { border-left: 4px solid #f87171; }
+        .toast.info { border-left: 4px solid #8b5cf6; }
+
+        .toast-message {
+            background: rgba(26, 10, 46, 0.95);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 12px;
+            padding: 12px 16px;
+            max-width: 280px;
+            color: #e8e8e8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            animation: toastSlideIn 0.3s ease, toastFadeOut 0.5s ease 3.5s forwards;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .toast-message .toast-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .toast-message .toast-content {
+            flex: 1;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes toastSlideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .game-title { font-size: 1.6rem; }
+            .card { width: 140px; height: 200px; }
+            .room-code { font-size: 36px; letter-spacing: 5px; }
+            .podium-block { width: 60px; }
+        }
+
+        .hidden { display: none !important; }
+
+        /* Floating Chatbot - Bottom Right */
+        .chatbot-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.5);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(139, 92, 246, 0.7);
+        }
+
+        .chatbot-toggle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .chatbot-toggle .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #1a0a2e;
+            animation: pulse-dot 1.5s infinite;
+            display: none;
+        }
+
+        .chatbot-toggle .notification-dot.active {
+            display: block;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 320px;
+            max-height: 400px;
+            background: rgba(26, 10, 46, 0.95);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .chatbot-window.open {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.3));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chatbot-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+        }
+
+        .chatbot-header-info {
+            flex: 1;
+        }
+
+        .chatbot-name {
+            font-size: 1rem;
+            color: #ffd700;
+        }
+
+        .chatbot-status {
+            font-size: 0.75rem;
+            color: #4ade80;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: #a8a8a8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .chatbot-close:hover {
+            color: #fff;
+        }
+
+        .chat-messages {
+            flex: 1;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 3px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .chat-message .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .chat-message .content {
+            background: rgba(139, 92, 246, 0.2);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border-top-left-radius: 4px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            max-width: 230px;
+            color: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <!-- Lockout Overlay -->
+    <div class="lockout-overlay" id="lockoutOverlay">
+        <div class="lockout-icon" id="lockoutIcon">💣</div>
+        <div class="lockout-message" id="lockoutMessage">Bạn đã chọn phải bom!</div>
+        <div class="lockout-timer" id="lockoutTimer">10</div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="game-title">🏆 Thi Đấu Mê Cung Triết Học</h1>
+            <div class="nav-links" id="navLinks">
+                <a href="../luyentap/" class="nav-btn primary">📚 Luyện Tập</a>
+                <a href="../" class="nav-btn secondary">💬 Chatbot</a>
+            </div>
+        </div>
+
+        <!-- Reconnect Banner -->
+        <div class="reconnect-banner hidden" id="reconnectBanner">
+            <div class="reconnect-info">
+                <strong>🔄 Phát hiện phiên chơi trước!</strong>
+                <small>Phòng: <span id="savedRoomName">-</span> | Mã: <span id="savedRoomCode">-</span></small>
+            </div>
+            <button class="reconnect-btn" onclick="reconnectToRoom()">Quay lại phòng</button>
+            <button class="dismiss-btn" onclick="dismissReconnect()">Bỏ qua</button>
+        </div>
+
+        <!-- Menu Screen -->
+        <div class="screen active" id="menuScreen">
+            <div class="menu-screen">
+                <div class="menu-icon">🏆</div>
+                <p class="menu-description">
+                    Thi đấu cùng bạn bè! Tạo phòng và mời mọi người tham gia.
+                    <br>Chủ phòng sẽ theo dõi và điều khiển trận đấu.
+                    <br>Ai trả lời đúng 10 câu nhanh nhất sẽ chiến thắng!
+                </p>
+                <div class="menu-buttons">
+                    <button class="menu-btn create" onclick="showCreateRoom()">
+                        <span>🎮 Tạo Phòng</span>
+                        <small>Tạo phòng và theo dõi trận đấu</small>
+                    </button>
+                    <button class="menu-btn join" onclick="showJoinRoom()">
+                        <span>🚪 Vào Phòng</span>
+                        <small>Nhập mã phòng để tham gia thi đấu</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Room Screen -->
+        <div class="screen" id="createRoomScreen">
+            <div class="form-screen">
+                <button class="back-btn" onclick="showMenu()">← Quay lại</button>
+                <h2>🎮 Tạo Phòng Mới</h2>
+                <div class="input-group">
+                    <label>Tên phòng</label>
+                    <input type="text" id="roomNameInput" placeholder="VD: Phòng Triết Học A1" maxlength="30">
+                </div>
+                <div class="input-group">
+                    <label>Tên của bạn (Chủ phòng - Chỉ theo dõi)</label>
+                    <input type="text" id="hostNameInput" placeholder="Nhập tên của bạn..." maxlength="20">
+                </div>
+                <div class="input-group">
+                    <label>Thời gian thi đấu (phút)</label>
+                    <select id="gameDurationSelect">
+                        <option value="5">5 phút</option>
+                        <option value="10" selected>10 phút</option>
+                        <option value="15">15 phút</option>
+                        <option value="20">20 phút</option>
+                        <option value="30">30 phút</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="createRoom()">Tạo Phòng</button>
+                <p style="text-align: center; margin-top: 15px; color: #a8a8a8; font-size: 13px;">
+                    ⚠️ Chủ phòng không tham gia chơi, chỉ theo dõi và điều khiển
+                </p>
+            </div>
+        </div>
+
+        <!-- Join Room Screen (Step 1: Enter Code) -->
+        <div class="screen" id="joinRoomScreen">
+            <div class="form-screen">
+                <button class="back-btn" onclick="showMenu()">← Quay lại</button>
+                <h2>🚪 Vào Phòng</h2>
+                <div class="input-group">
+                    <label>Nhập mã phòng (6 ký tự)</label>
+                    <input type="text" id="joinCodeInput" class="code-input" placeholder="XXXXXX" maxlength="6">
+                </div>
+                <button class="btn btn-primary" onclick="checkRoom()">Kiểm Tra Phòng</button>
+            </div>
+        </div>
+
+        <!-- Join Room Screen (Step 2: Enter Name) -->
+        <div class="screen" id="enterNameScreen">
+            <div class="form-screen">
+                <button class="back-btn" onclick="showJoinRoom()">← Quay lại</button>
+                <h2>✅ Tìm Thấy Phòng!</h2>
+                <div class="room-info">
+                    <div class="room-name" id="foundRoomName">Tên phòng</div>
+                    <small>Mã phòng</small>
+                    <div class="room-code" id="foundRoomCode">XXXXXX</div>
+                </div>
+                <div class="input-group">
+                    <label>Nhập tên của bạn để tham gia</label>
+                    <input type="text" id="playerNameInput" placeholder="Nhập tên của bạn..." maxlength="20">
+                </div>
+                <button class="btn btn-primary" onclick="joinRoom()">Vào Phòng</button>
+            </div>
+        </div>
+
+        <!-- Waiting Room (Host) -->
+        <div class="screen" id="waitingHostScreen">
+            <div class="form-screen" style="max-width: 550px;">
+                <h2>⏳ Phòng Chờ - Chủ Phòng</h2>
+                <div class="room-info">
+                    <div class="room-name" id="waitingRoomName">Tên phòng</div>
+                    <small>Mã phòng - Chia sẻ cho bạn bè!</small>
+                    <div class="room-code" id="waitingRoomCode">------</div>
+                    <div id="qrcode"></div>
+                    <p style="color: #fbbf24; font-size: 14px; margin-top: 10px;">
+                        ⏱️ Thời gian thi đấu: <span id="gameDurationDisplay">10</span> phút
+                    </p>
+                </div>
+                <div class="player-section">
+                    <h3>👥 Người chơi (<span id="playerCount">0</span>)</h3>
+                    <div class="player-list" id="playerList">
+                        <p class="waiting-text">Đang chờ người chơi tham gia...</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="startGameBtn" onclick="startCompetition()" disabled>
+                    🚀 Bắt Đầu Thi Đấu (Cần ít nhất 1 người chơi)
+                </button>
+            </div>
+        </div>
+
+        <!-- Waiting Room (Player) -->
+        <div class="screen" id="waitingPlayerScreen">
+            <div class="form-screen" style="max-width: 550px;">
+                <h2>⏳ Đang Chờ...</h2>
+                <div class="room-info">
+                    <div class="room-name" id="waitingRoomNamePlayer">Tên phòng</div>
+                    <small>Mã phòng</small>
+                    <div class="room-code" id="waitingRoomCodePlayer">------</div>
+                </div>
+                <p class="waiting-text">Đang chờ chủ phòng bắt đầu trận đấu...</p>
+                <div class="player-section">
+                    <h3>👥 Người chơi (<span id="playerCountPlayer">0</span>)</h3>
+                    <div class="player-list" id="playerListPlayer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen" id="gameScreen">
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span class="room-counter">🚪 Phòng <span id="roomNumber">1</span></span>
+                    <div class="score-display">
+                        <span class="score-item correct">✓ <span id="correctCount">0</span></span>
+                        <span class="score-item wrong">✗ <span id="wrongCount">0</span></span>
+                    </div>
+                    <div class="timer-display" id="timer">00:00</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="cards-area" id="cardsArea">
+                <p class="cards-instruction">🎴 Chọn một lá bài để lật...</p>
+                <div class="cards-container" id="cardsContainer"></div>
+            </div>
+
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+            </div>
+
+            <div class="question-area" id="questionArea">
+                <div class="question-header">
+                    <span class="question-topic" id="questionTopic">Chủ đề</span>
+                    <span id="questionNumber">Câu 1/10</span>
+                </div>
+                <p class="question-text" id="questionText">Đang tải câu hỏi...</p>
+                <div class="answers-grid" id="answersGrid"></div>
+                <button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>Xác Nhận</button>
+            </div>
+        </div>
+
+        <!-- Host Control Panel (During Game) -->
+        <div class="screen" id="hostControlScreen">
+            <div class="host-control-panel">
+                <h2 style="text-align: center; color: #ffd700; margin-bottom: 20px;">📊 Bảng Điều Khiển Chủ Phòng</h2>
+                
+                <div class="room-info" style="padding: 15px;">
+                    <span style="color: #a8a8a8;">Phòng: </span>
+                    <span style="color: #8b5cf6; font-weight: bold;" id="hostRoomName">-</span>
+                    <span style="margin: 0 10px; color: #555;">|</span>
+                    <span style="color: #a8a8a8;">Mã: </span>
+                    <span style="color: #ffd700; font-weight: bold; letter-spacing: 3px;" id="hostRoomCode">------</span>
+                </div>
+
+                <div class="game-timer-big" id="hostTimer">10:00</div>
+
+                <div class="live-scoreboard">
+                    <div class="scoreboard-header">
+                        <div class="scoreboard-title">🏆 Bảng Xếp Hạng Trực Tiếp</div>
+                        <div class="live-indicator">
+                            <div class="live-dot"></div>
+                            <span>LIVE</span>
+                        </div>
+                    </div>
+                    <div class="scoreboard-list" id="liveScoreboard">
+                        <p class="waiting-text">Đang tải dữ liệu...</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger" id="endGameBtn" onclick="endGameByHost()">
+                    🛑 Kết Thúc Trận Đấu
+                </button>
+            </div>
+        </div>
+
+        <!-- Rankings Screen -->
+        <div class="screen" id="rankingsScreen">
+            <div class="rankings-screen">
+                <h2 class="rankings-title">🏆 Bảng Xếp Hạng</h2>
+                <div class="podium" id="podium"></div>
+                <div class="full-rankings" id="fullRankings"></div>
+                <button class="btn btn-primary" onclick="backToMenu()" style="margin-top: 30px;">
+                    Về Trang Chủ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot - Bottom Right -->
+    <div class="chatbot-float" id="chatbotFloat">
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <img src="image/1.png" alt="AI" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="chatbot-header-info">
+                    <div class="chatbot-name">Triết học AI</div>
+                    <div class="chatbot-status">● Đang hỗ trợ</div>
+                </div>
+                <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message">
+                    <img src="image/1.png" alt="AI" class="avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                    <div class="content">
+                        Chào bạn! Tôi là Triết học AI. Hãy lật một lá bài để bắt đầu. Nếu trả lời sai, tôi sẽ gợi ý để giúp bạn! 🎴
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-toggle" onclick="toggleChatbot()">
+            <img src="image/1.png" alt="AI" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+            <span class="notification-dot" id="notificationDot"></span>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:5002/';
+        const SESSION_KEY = 'thidau_session';
+
+        const topics = [
+            { name: 'Vật chất & Ý thức', icon: '🧠' },
+            { name: 'Nguồn gốc & bản chất nhận thức', icon: '👁️' },
+            { name: 'Chân lý', icon: '✨' },
+            { name: 'Các quy luật biện chứng', icon: '🔄' },
+            { name: 'Phạm trù phép biện chứng', icon: '📊' },
+            { name: 'Xã hội, giai cấp, nhà nước', icon: '🏛️' }
+        ];
+
+        let gameState = {
+            roomCode: null,
+            roomName: null,
+            playerName: null,
+            isHost: false,
+            sessionId: null,
+            roomNumber: 1,
+            correctCount: 0,
+            wrongCount: 0,
+            currentQuestion: null,
+            selectedAnswer: null,
+            isLocked: false,
+            startTime: null,
+            gameDuration: 10,
+            timerInterval: null,
+            pollInterval: null,
+            hostPollInterval: null,
+            requiredCorrect: 10,
+            gameEnded: false
+        };
+
+        // ==================== SESSION MANAGEMENT ====================
+        function saveSession() {
+            const session = {
+                roomCode: gameState.roomCode,
+                roomName: gameState.roomName,
+                playerName: gameState.playerName,
+                isHost: gameState.isHost,
+                sessionId: gameState.sessionId,
+                roomNumber: gameState.roomNumber,
+                correctCount: gameState.correctCount,
+                wrongCount: gameState.wrongCount,
+                gameDuration: gameState.gameDuration,
+                startTime: gameState.startTime,
+                savedAt: Date.now()
+            };
+            localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        }
+
+        function loadSession() {
+            const saved = localStorage.getItem(SESSION_KEY);
+            if (!saved) return null;
+            
+            try {
+                const session = JSON.parse(saved);
+                if (Date.now() - session.savedAt > 2 * 60 * 60 * 1000) {
+                    clearSession();
+                    return null;
+                }
+                return session;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function clearSession() {
+            localStorage.removeItem(SESSION_KEY);
+        }
+
+        function checkSavedSession() {
+            const session = loadSession();
+            if (session && session.roomCode) {
+                document.getElementById('savedRoomName').textContent = session.roomName || 'Không rõ';
+                document.getElementById('savedRoomCode').textContent = session.roomCode;
+                document.getElementById('reconnectBanner').classList.remove('hidden');
+            }
+        }
+
+        async function reconnectToRoom() {
+            const session = loadSession();
+            if (!session) {
+                showToast('Không tìm thấy phiên chơi!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/room/${session.roomCode}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showToast('Phòng đã kết thúc hoặc không tồn tại!', 'error');
+                    clearSession();
+                    document.getElementById('reconnectBanner').classList.add('hidden');
+                    return;
+                }
+
+                gameState.roomCode = session.roomCode;
+                gameState.roomName = session.roomName;
+                gameState.playerName = session.playerName;
+                gameState.isHost = session.isHost;
+                gameState.sessionId = session.sessionId;
+                gameState.roomNumber = session.roomNumber || 1;
+                gameState.correctCount = session.correctCount || 0;
+                gameState.wrongCount = session.wrongCount || 0;
+                gameState.gameDuration = session.gameDuration || 10;
+                gameState.startTime = session.startTime;
+
+                document.getElementById('reconnectBanner').classList.add('hidden');
+
+                if (data.room_status === 'playing') {
+                    if (gameState.isHost) {
+                        showHostControlPanel();
+                    } else {
+                        resumeGame();
+                    }
+                } else if (data.room_status === 'finished') {
+                    showRankings();
+                } else {
+                    if (gameState.isHost) {
+                        showWaitingHost();
+                    } else {
+                        showWaitingPlayer();
+                    }
+                }
+
+                showToast('Đã kết nối lại phòng!', 'success');
+            } catch (error) {
+                showToast('Không thể kết nối: ' + error.message, 'error');
+            }
+        }
+
+        function dismissReconnect() {
+            clearSession();
+            document.getElementById('reconnectBanner').classList.add('hidden');
+        }
+
+        // ==================== STARS BACKGROUND ====================
+        function generateStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        // ==================== NAVIGATION ====================
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showMenu() {
+            clearIntervals();
+            showScreen('menuScreen');
+            document.getElementById('navLinks').classList.remove('hidden');
+        }
+
+        function showCreateRoom() {
+            showScreen('createRoomScreen');
+        }
+
+        function showJoinRoom() {
+            showScreen('joinRoomScreen');
+            document.getElementById('joinCodeInput').value = '';
+        }
+
+        function backToMenu() {
+            clearIntervals();
+            clearSession();
+            resetGameState();
+            document.getElementById('navLinks').classList.remove('hidden');
+            showScreen('menuScreen');
+        }
+
+        function clearIntervals() {
+            if (gameState.timerInterval) clearInterval(gameState.timerInterval);
+            if (gameState.pollInterval) clearInterval(gameState.pollInterval);
+            if (gameState.hostPollInterval) clearInterval(gameState.hostPollInterval);
+        }
+
+        function resetGameState() {
+            gameState = {
+                roomCode: null,
+                roomName: null,
+                playerName: null,
+                isHost: false,
+                sessionId: null,
+                roomNumber: 1,
+                correctCount: 0,
+                wrongCount: 0,
+                currentQuestion: null,
+                selectedAnswer: null,
+                isLocked: false,
+                startTime: null,
+                gameDuration: 10,
+                timerInterval: null,
+                pollInterval: null,
+                hostPollInterval: null,
+                requiredCorrect: 10,
+                gameEnded: false
+            };
+        }
+
+        // ==================== TOAST ====================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // ==================== CHATBOT ====================
+        function toggleChatbot() {
+            const chatWindow = document.getElementById('chatbotWindow');
+            const notificationDot = document.getElementById('notificationDot');
+            
+            chatWindow.classList.toggle('open');
+            
+            if (chatWindow.classList.contains('open')) {
+                notificationDot.classList.remove('active');
+            }
+        }
+
+        function showChatToast(message) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            const plainText = message.replace(/<[^>]*>/g, '');
+            toast.innerHTML = `
+                <img src="image/1.png" alt="AI" class="toast-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="toast-content">${plainText}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        function addChatMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatWindow = document.getElementById('chatbotWindow');
+            const notificationDot = document.getElementById('notificationDot');
+            
+            const div = document.createElement('div');
+            div.className = 'chat-message';
+            div.innerHTML = `
+                <img src="image/1.png" alt="AI" class="avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=philosophy'">
+                <div class="content">${message}</div>
+            `;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            if (!chatWindow.classList.contains('open')) {
+                notificationDot.classList.add('active');
+                showChatToast(message);
+            }
+        }
+
+        // ==================== CREATE ROOM ====================
+        async function createRoom() {
+            const roomName = document.getElementById('roomNameInput').value.trim();
+            const hostName = document.getElementById('hostNameInput').value.trim();
+            const duration = parseInt(document.getElementById('gameDurationSelect').value);
+
+            if (!roomName) {
+                showToast('Vui lòng nhập tên phòng!', 'error');
+                return;
+            }
+            if (!hostName) {
+                showToast('Vui lòng nhập tên của bạn!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        host_name: hostName,
+                        room_name: roomName,
+                        duration: duration
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Không thể tạo phòng');
+
+                gameState.roomCode = data.room_code;
+                gameState.roomName = roomName;
+                gameState.playerName = hostName;
+                gameState.isHost = true;
+                gameState.gameDuration = duration;
+
+                saveSession();
+                showWaitingHost();
+                showToast('Tạo phòng thành công!', 'success');
+            } catch (error) {
+                showToast('Lỗi: ' + error.message, 'error');
+            }
+        }
+
+        function showWaitingHost() {
+            showScreen('waitingHostScreen');
+            document.getElementById('waitingRoomName').textContent = gameState.roomName;
+            document.getElementById('waitingRoomCode').textContent = gameState.roomCode;
+            document.getElementById('gameDurationDisplay').textContent = gameState.gameDuration;
+
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: `${window.location.origin}${window.location.pathname}?join=${gameState.roomCode}`,
+                width: 150,
+                height: 150
+            });
+
+            pollRoomStatus();
+        }
+
+        // ==================== JOIN ROOM ====================
+        async function checkRoom() {
+            const code = document.getElementById('joinCodeInput').value.trim().toUpperCase();
+
+            if (!code || code.length !== 6) {
+                showToast('Mã phòng phải có 6 ký tự!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/room/${code}`);
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.message || 'Phòng không tồn tại');
+
+                gameState.roomCode = code;
+                gameState.roomName = data.room_name || 'Phòng Thi Đấu';
+                gameState.gameDuration = data.duration || 10;
+
+                document.getElementById('foundRoomName').textContent = gameState.roomName;
+                document.getElementById('foundRoomCode').textContent = code;
+
+                showScreen('enterNameScreen');
+            } catch (error) {
+                showToast('Lỗi: ' + error.message, 'error');
+            }
+        }
+
+        async function joinRoom() {
+            const playerName = document.getElementById('playerNameInput').value.trim();
+
+            if (!playerName) {
+                showToast('Vui lòng nhập tên của bạn!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room_code: gameState.roomCode,
+                        player_name: playerName
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Không thể tham gia phòng');
+
+                gameState.playerName = playerName;
+                gameState.isHost = false;
+
+                saveSession();
+                showWaitingPlayer();
+                showToast('Đã vào phòng!', 'success');
+            } catch (error) {
+                showToast('Lỗi: ' + error.message, 'error');
+            }
+        }
+
+        function showWaitingPlayer() {
+            showScreen('waitingPlayerScreen');
+            document.getElementById('waitingRoomNamePlayer').textContent = gameState.roomName;
+            document.getElementById('waitingRoomCodePlayer').textContent = gameState.roomCode;
+
+            pollRoomStatus();
+        }
+
+        // ==================== POLL ROOM STATUS ====================
+        async function pollRoomStatus() {
+            const update = async () => {
+                try {
+                    const response = await fetch(`${API_BASE}/api/competition/room/${gameState.roomCode}`);
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        showToast('Phòng không tồn tại', 'error');
+                        clearIntervals();
+                        clearSession();
+                        backToMenu();
+                        return;
+                    }
+
+                    const players = data.players.filter(p => !p.is_host);
+                    const listEl = gameState.isHost ? 
+                        document.getElementById('playerList') : 
+                        document.getElementById('playerListPlayer');
+                    const countEl = gameState.isHost ? 
+                        document.getElementById('playerCount') : 
+                        document.getElementById('playerCountPlayer');
+
+                    countEl.textContent = players.length;
+                    
+                    if (players.length === 0) {
+                        listEl.innerHTML = '<p class="waiting-text">Đang chờ người chơi tham gia...</p>';
+                    } else {
+                        listEl.innerHTML = players.map(p => `
+                            <div class="player-item">
+                                <div class="player-avatar">${p.name.charAt(0).toUpperCase()}</div>
+                                <span class="player-name">${p.name}</span>
+                                <span class="player-badge">Người chơi</span>
+                            </div>
+                        `).join('');
+                    }
+
+                    if (gameState.isHost) {
+                        const btn = document.getElementById('startGameBtn');
+                        btn.disabled = players.length < 1;
+                        btn.textContent = players.length < 1 
+                            ? '🚀 Bắt Đầu Thi Đấu (Cần ít nhất 1 người chơi)'
+                            : '🚀 Bắt Đầu Thi Đấu';
+                    }
+
+                    if (!gameState.isHost && data.room_status === 'playing') {
+                        clearInterval(gameState.pollInterval);
+                        initPlayerGame();
+                    }
+                } catch (error) {
+                    console.error('Poll error:', error);
+                }
+            };
+
+            update();
+            gameState.pollInterval = setInterval(update, 2000);
+        }
+
+        // ==================== START COMPETITION (HOST) ====================
+        async function startCompetition() {
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room_code: gameState.roomCode,
+                        host_name: gameState.playerName,
+                        duration: gameState.gameDuration
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.message || 'Không thể bắt đầu');
+
+                gameState.startTime = Date.now();
+                clearInterval(gameState.pollInterval);
+                saveSession();
+                
+                showHostControlPanel();
+            } catch (error) {
+                showToast('Lỗi: ' + error.message, 'error');
+            }
+        }
+
+        // ==================== HOST CONTROL PANEL ====================
+        function showHostControlPanel() {
+            document.getElementById('navLinks').classList.add('hidden');
+            showScreen('hostControlScreen');
+            
+            document.getElementById('hostRoomName').textContent = gameState.roomName;
+            document.getElementById('hostRoomCode').textContent = gameState.roomCode;
+
+            if (!gameState.startTime) {
+                gameState.startTime = Date.now();
+            }
+            
+            updateHostTimer();
+            gameState.timerInterval = setInterval(updateHostTimer, 1000);
+
+            pollLiveScoreboard();
+            gameState.hostPollInterval = setInterval(pollLiveScoreboard, 2000);
+        }
+
+        function updateHostTimer() {
+            const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+            const totalSeconds = gameState.gameDuration * 60;
+            const remaining = Math.max(0, totalSeconds - elapsed);
+            
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            
+            const timerEl = document.getElementById('hostTimer');
+            timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if (remaining <= 60) {
+                timerEl.classList.add('warning');
+            }
+
+            if (remaining <= 0) {
+                endGameByHost();
+            }
+        }
+
+        async function pollLiveScoreboard() {
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/live/${gameState.roomCode}`);
+                const data = await response.json();
+
+                if (!response.ok) return;
+
+                const scoreboard = document.getElementById('liveScoreboard');
+                
+                if (!data.players || data.players.length === 0) {
+                    scoreboard.innerHTML = '<p class="waiting-text">Chưa có dữ liệu...</p>';
+                    return;
+                }
+
+                const sorted = [...data.players].sort((a, b) => {
+                    if (b.correct !== a.correct) return b.correct - a.correct;
+                    return (a.time_ms || Infinity) - (b.time_ms || Infinity);
+                });
+
+                const requiredCorrect = gameState.requiredCorrect || 10;
+
+                scoreboard.innerHTML = sorted.map((p, i) => {
+                    const rankClass = i === 0 ? 'gold' : (i === 1 ? 'silver' : (i === 2 ? 'bronze' : 'normal'));
+                    const correct = p.correct || 0;
+                    const finished = correct >= requiredCorrect;
+                    const timeStr = p.time_ms ? formatTimeMs(p.time_ms) : '--:--';
+                    const progressText = finished ? '✅ Hoàn thành!' : `📝 Câu ${correct + 1}/${requiredCorrect}`;
+                    const progressPercent = Math.min(100, (correct / requiredCorrect) * 100);
+                    
+                    return `
+                        <div class="scoreboard-item ${finished ? 'finished' : ''}">
+                            <div class="scoreboard-rank ${rankClass}">${i + 1}</div>
+                            <div class="scoreboard-player">
+                                <div class="scoreboard-player-name">${p.name}</div>
+                                <div class="scoreboard-player-status">${progressText}</div>
+                                <div class="scoreboard-progress-bar">
+                                    <div class="scoreboard-progress-fill" style="width: ${progressPercent}%"></div>
+                                </div>
+                            </div>
+                            <div class="scoreboard-stats">
+                                <span class="stat-correct">✓ ${correct}</span>
+                                <span class="stat-wrong">✗ ${p.wrong || 0}</span>
+                                <span class="stat-time">${timeStr}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error('Poll scoreboard error:', error);
+            }
+        }
+
+        async function endGameByHost() {
+            if (gameState.gameEnded) return;
+            gameState.gameEnded = true;
+
+            clearIntervals();
+
+            try {
+                await fetch(`${API_BASE}/api/competition/end`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room_code: gameState.roomCode,
+                        host_name: gameState.playerName
+                    })
+                });
+            } catch (error) {
+                console.error('End game error:', error);
+            }
+
+            showRankings();
+        }
+
+        // ==================== PLAYER GAME ====================
+        async function initPlayerGame() {
+            try {
+                const response = await fetch(`${API_BASE}/api/game/maze/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+
+                const data = await response.json();
+                gameState.sessionId = data.session_id;
+                gameState.requiredCorrect = data.rooms_total || 10;
+
+                gameState.startTime = Date.now();
+                gameState.timerInterval = setInterval(updatePlayerTimer, 1000);
+
+                document.getElementById('navLinks').classList.add('hidden');
+                saveSession();
+
+                showScreen('gameScreen');
+                generateCards();
+                addChatMessage('Trận đấu bắt đầu! Hãy lật bài và trả lời nhanh nhất có thể! ⚡');
+                
+                pollGameStatus();
+            } catch (error) {
+                showToast('Lỗi: ' + error.message, 'error');
+            }
+        }
+
+        function resumeGame() {
+            document.getElementById('navLinks').classList.add('hidden');
+            
+            updateProgress();
+            
+            if (!gameState.startTime) {
+                gameState.startTime = Date.now();
+            }
+            
+            gameState.timerInterval = setInterval(updatePlayerTimer, 1000);
+
+            showScreen('gameScreen');
+            generateCards();
+            addChatMessage('Đã kết nối lại! Tiếp tục trận đấu nhé! 🎮');
+            
+            pollGameStatus();
+        }
+
+        function updatePlayerTimer() {
+            const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            document.getElementById('timer').textContent = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        async function pollGameStatus() {
+            const check = async () => {
+                try {
+                    const response = await fetch(`${API_BASE}/api/competition/room/${gameState.roomCode}`);
+                    const data = await response.json();
+
+                    if (data.room_status === 'finished') {
+                        clearIntervals();
+                        gameState.gameEnded = true;
+                        
+                        // Gửi kết quả cuối cùng của người chơi trước khi hiện rankings
+                        if (!gameState.isHost) {
+                            const elapsedMs = Date.now() - gameState.startTime;
+                            try {
+                                await fetch(`${API_BASE}/api/competition/finish`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        room_code: gameState.roomCode,
+                                        player_name: gameState.playerName,
+                                        correct: gameState.correctCount,
+                                        wrong: gameState.wrongCount,
+                                        time_ms: elapsedMs
+                                    })
+                                });
+                            } catch (e) {
+                                console.error('Submit final result error:', e);
+                            }
+                        }
+                        
+                        showToast('🏁 Trận đấu đã kết thúc!', 'info');
+                        showRankings();
+                    }
+                } catch (error) {
+                    console.error('Poll game status error:', error);
+                }
+            };
+
+            check(); // Kiểm tra ngay lập tức
+            gameState.pollInterval = setInterval(check, 2000); // Poll mỗi 2 giây
+        }
+
+        // ==================== CARDS ====================
+        function generateCards() {
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            const shuffled = [...topics].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, 2);
+
+            const cardData = [
+                { type: 'topic', ...selected[0] },
+                { type: 'topic', ...selected[1] },
+                { type: 'bomb', name: 'BOM!', icon: '💣' }
+            ].sort(() => Math.random() - 0.5);
+
+            cardData.forEach((data, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.type = data.type;
+                card.dataset.topic = data.name;
+                card.dataset.icon = data.icon;
+                card.onclick = () => flipCard(card);
+
+                card.innerHTML = `
+                    <div class="card-face card-back"></div>
+                    <div class="card-face card-front ${data.type === 'bomb' ? 'bomb-card' : ''}">
+                        <div class="card-icon">${data.icon}</div>
+                        <div class="card-topic">${data.name}</div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        async function flipCard(card) {
+            if (gameState.isLocked || card.classList.contains('flipped') || card.classList.contains('disabled')) {
+                return;
+            }
+
+            card.classList.add('flipped');
+
+            const cardType = card.dataset.type;
+            const topic = card.dataset.topic;
+            const icon = card.dataset.icon;
+
+            if (cardType === 'bomb') {
+                setTimeout(() => {
+                    document.querySelectorAll('.card').forEach(c => c.classList.add('disabled'));
+                    addChatMessage(`💣 Ôi không! Bạn đã lật phải lá BOM! Đợi 10 giây rồi chọn lá khác nhé!`);
+                    showLockout('bomb');
+                }, 600);
+            } else {
+                setTimeout(async () => {
+                    document.querySelectorAll('.card').forEach(c => c.classList.add('disabled'));
+                    addChatMessage(`${icon} Bạn đã chọn chủ đề: <strong>${topic}</strong>. Đang tải câu hỏi...`);
+                    await fetchQuestion(topic);
+                }, 600);
+            }
+        }
+
+        // ==================== LOCKOUT ====================
+        function showLockout(type, message = null) {
+            gameState.isLocked = true;
+            const overlay = document.getElementById('lockoutOverlay');
+            const icon = document.getElementById('lockoutIcon');
+            const msg = document.getElementById('lockoutMessage');
+            const timer = document.getElementById('lockoutTimer');
+
+            icon.textContent = type === 'bomb' ? '💣' : '❌';
+            msg.textContent = type === 'bomb' ? 'Bạn đã chọn phải bom!' : (message || 'Đáp án chưa đúng!');
+
+            overlay.classList.add('active');
+            let seconds = 10;
+            timer.textContent = seconds;
+
+            const countdown = setInterval(() => {
+                seconds--;
+                timer.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdown);
+                    overlay.classList.remove('active');
+                    gameState.isLocked = false;
+
+                    if (type === 'bomb') {
+                        document.querySelectorAll('.card').forEach(c => {
+                            if (c.dataset.type !== 'bomb') c.classList.remove('disabled');
+                        });
+                    }
+                }
+            }, 1000);
+        }
+
+        // ==================== QUESTION ====================
+        async function fetchQuestion(topic) {
+            document.getElementById('cardsArea').style.display = 'none';
+            document.getElementById('loadingSpinner').classList.add('active');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/game/maze/question`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: gameState.sessionId,
+                        topic: topic
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'ok' || data.question) {
+                    gameState.currentQuestion = data;
+                    displayQuestion(data, topic);
+                } else {
+                    addChatMessage('Không tìm thấy câu hỏi cho chủ đề này. Hãy thử chủ đề khác! 🔍');
+                    resetToCards();
+                }
+            } catch (error) {
+                addChatMessage('Có lỗi xảy ra. Hãy thử lại nhé! 🔧');
+                resetToCards();
+            }
+        }
+
+        function displayQuestion(data, topic) {
+            document.getElementById('loadingSpinner').classList.remove('active');
+
+            document.getElementById('questionTopic').textContent = topic;
+            document.getElementById('questionNumber').textContent = `Câu ${gameState.correctCount + 1}/${gameState.requiredCorrect}`;
+            document.getElementById('questionText').textContent = data.question;
+
+            const grid = document.getElementById('answersGrid');
+            grid.innerHTML = '';
+
+            ['A', 'B', 'C', 'D'].forEach(opt => {
+                if (data[opt]) {
+                    const div = document.createElement('div');
+                    div.className = 'answer-option';
+                    div.dataset.answer = opt;
+                    div.onclick = () => selectAnswer(opt);
+                    div.innerHTML = `
+                        <span class="answer-label">${opt}</span>
+                        <span>${data[opt]}</span>
+                    `;
+                    grid.appendChild(div);
+                }
+            });
+
+            gameState.selectedAnswer = null;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('questionArea').classList.add('active');
+        }
+
+        function selectAnswer(answer) {
+            if (gameState.isLocked) return;
+
+            document.querySelectorAll('.answer-option').forEach(o => o.classList.remove('selected'));
+            document.querySelector(`.answer-option[data-answer="${answer}"]`).classList.add('selected');
+            gameState.selectedAnswer = answer;
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // ==================== SUBMIT ANSWER ====================
+        async function submitAnswer() {
+            if (!gameState.selectedAnswer || gameState.isLocked) return;
+
+            const btn = document.getElementById('submitBtn');
+
+            if (btn.dataset.nextRoom === 'true') {
+                gameState.roomNumber++;
+                nextRoom();
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Đang kiểm tra...';
+            document.querySelectorAll('.answer-option').forEach(o => o.classList.add('disabled'));
+
+            try {
+                const response = await fetch(`${API_BASE}/api/game/maze/answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_id: gameState.sessionId,
+                        qid: gameState.currentQuestion.qid,
+                        answer: gameState.selectedAnswer
+                    })
+                });
+
+                const data = await response.json();
+                const selected = document.querySelector(`.answer-option[data-answer="${gameState.selectedAnswer}"]`);
+
+                if (data.correct) {
+                    selected.classList.add('correct');
+                    gameState.correctCount++;
+                    updateProgress();
+                    saveSession();
+                    updateServerProgress();
+
+                    if (gameState.correctCount >= gameState.requiredCorrect) {
+                        btn.textContent = '🏆 Hoàn thành!';
+                        addChatMessage('🎉 Tuyệt vời! Bạn đã hoàn thành tất cả các câu hỏi!');
+                        setTimeout(() => finishGame(), 1500);
+                    } else {
+                        btn.textContent = '➡️ Tiếp Tục';
+                        btn.disabled = false;
+                        btn.classList.add('next-room');
+                        btn.dataset.nextRoom = 'true';
+                        addChatMessage('🎉 Tuyệt vời! Đáp án chính xác! Tiếp tục nào!');
+                    }
+                } else {
+                    selected.classList.add('wrong');
+                    gameState.wrongCount++;
+                    updateProgress();
+                    saveSession();
+                    updateServerProgress();
+                    
+                    showLockout('wrong', 'Đáp án chưa đúng!');
+                    
+                    if (data.hint || data.gatekeeper) {
+                        addChatMessage('💡 ' + (data.hint || data.gatekeeper));
+                    } else {
+                        addChatMessage('💡 Hãy suy nghĩ lại nhé! Xem xét kỹ từng đáp án.');
+                    }
+
+                    setTimeout(() => {
+                        document.querySelectorAll('.answer-option').forEach(o => {
+                            o.classList.remove('selected', 'wrong', 'disabled');
+                        });
+                        gameState.selectedAnswer = null;
+                        btn.textContent = 'Xác Nhận';
+                        btn.disabled = true;
+                        btn.dataset.nextRoom = 'false';
+                    }, 10000);
+                }
+            } catch (error) {
+                addChatMessage('Có lỗi xảy ra khi kiểm tra đáp án. Hãy thử lại! 🔧');
+                btn.textContent = 'Xác Nhận';
+                btn.disabled = false;
+                document.querySelectorAll('.answer-option').forEach(o => o.classList.remove('disabled'));
+            }
+        }
+
+        async function updateServerProgress() {
+            try {
+                await fetch(`${API_BASE}/api/competition/progress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room_code: gameState.roomCode,
+                        player_name: gameState.playerName,
+                        correct: gameState.correctCount,
+                        wrong: gameState.wrongCount
+                    })
+                });
+            } catch (error) {
+                console.error('Update progress error:', error);
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('roomNumber').textContent = gameState.roomNumber;
+            document.getElementById('correctCount').textContent = gameState.correctCount;
+            document.getElementById('wrongCount').textContent = gameState.wrongCount;
+            document.getElementById('progressFill').style.width = 
+                (gameState.correctCount / gameState.requiredCorrect * 100) + '%';
+        }
+
+        function nextRoom() {
+            document.getElementById('roomNumber').textContent = gameState.roomNumber;
+            document.getElementById('questionArea').classList.remove('active');
+            document.getElementById('cardsArea').style.display = 'block';
+
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = 'Xác Nhận';
+            btn.classList.remove('next-room');
+            btn.dataset.nextRoom = 'false';
+            btn.disabled = true;
+
+            addChatMessage(`🚪 Phòng ${gameState.roomNumber}! Hãy lật một lá bài mới nhé!`);
+            generateCards();
+        }
+
+        function resetToCards() {
+            document.getElementById('loadingSpinner').classList.remove('active');
+            document.getElementById('cardsArea').style.display = 'block';
+            document.querySelectorAll('.card').forEach(c => {
+                if (!c.classList.contains('flipped')) c.classList.remove('disabled');
+            });
+        }
+
+        // ==================== FINISH GAME ====================
+        async function finishGame() {
+            clearIntervals();
+
+            const elapsedMs = Date.now() - gameState.startTime;
+
+            try {
+                await fetch(`${API_BASE}/api/competition/finish`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        room_code: gameState.roomCode,
+                        player_name: gameState.playerName,
+                        correct: gameState.correctCount,
+                        wrong: gameState.wrongCount,
+                        time_ms: elapsedMs
+                    })
+                });
+
+                showRankings();
+            } catch (error) {
+                showRankings();
+            }
+        }
+
+        // ==================== RANKINGS ====================
+        async function showRankings() {
+            clearSession();
+            showScreen('rankingsScreen');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/competition/rankings/${gameState.roomCode}`);
+                const data = await response.json();
+
+                if (!data.rankings || data.rankings.length === 0) {
+                    document.getElementById('podium').innerHTML = '';
+                    document.getElementById('fullRankings').innerHTML = '<p class="waiting-text">Chưa có kết quả</p>';
+                    return;
+                }
+
+                const podium = document.getElementById('podium');
+                const order = [1, 0, 2];
+                podium.innerHTML = order.map(i => {
+                    const p = data.rankings[i];
+                    if (!p) return '';
+                    return `
+                        <div class="podium-place place-${i + 1}">
+                            <div class="podium-avatar">${p.name.charAt(0).toUpperCase()}</div>
+                            <div class="podium-name">${p.name}</div>
+                            <div class="podium-stats">${p.correct} đúng - ${formatTimeMs(p.time_ms)}</div>
+                            <div class="podium-block">${i + 1}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.getElementById('fullRankings').innerHTML = data.rankings.map((p, i) => `
+                    <div class="rank-item">
+                        <div class="rank-number">#${i + 1}</div>
+                        <span class="player-name">${p.name}</span>
+                        <span class="rank-score">${p.correct} đúng</span>
+                        <span class="rank-time">${formatTimeMs(p.time_ms)}</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('fullRankings').innerHTML = '<p class="waiting-text">Không thể tải bảng xếp hạng</p>';
+            }
+        }
+
+        function formatTimeMs(ms) {
+            if (!ms) return '--:--';
+            const totalSeconds = Math.floor(ms / 1000);
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            const millis = Math.floor((ms % 1000) / 10);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${millis.toString().padStart(2, '0')}`;
+        }
+
+        // ==================== INIT ====================
+        generateStars();
+        checkSavedSession();
+
+        const params = new URLSearchParams(window.location.search);
+        const joinCode = params.get('join');
+        if (joinCode) {
+            document.getElementById('joinCodeInput').value = joinCode;
+            showJoinRoom();
+        }
+
+        window.addEventListener('beforeunload', (e) => {
+            if (gameState.roomCode && !gameState.gameEnded) {
+                saveSession();
+            }
+        });
+    </script>
+</body>
+</html>
