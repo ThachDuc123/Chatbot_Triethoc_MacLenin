@@ -1,0 +1,1 @@
+ powershell -ExecutionPolicy Bypass -File .\run_chatbot.ps1 -OllamaModel "qwen2.5:7b-instruct" -TopK 4 -MaxNewTokens 0 -OllamaTimeoutSeconds 300         

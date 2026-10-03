@@ -1,0 +1,97 @@
+{
+  "VatChat_YThuc": {
+    "topic_vi": "Vật chất & Ý thức",
+    "keywords": [
+      "vật chất",
+      "ý thức",
+      "mối quan hệ giữa vật chất và ý thức",
+      "tính thứ nhất của vật chất",
+      "tính thứ hai của ý thức",
+      "phạm trù vật chất",
+      "phản ánh",
+      "tồn tại xã hội",
+      "ý thức xã hội"
+    ]
+  },
+  "NhanThuc": {
+    "topic_vi": "Nguồn gốc & bản chất nhận thức",
+    "keywords": [
+      "nhận thức",
+      "nguồn gốc của nhận thức",
+      "nguồn gốc nhận thức",
+      "thực tiễn",
+      "trực quan sinh động",
+      "tư duy trừu tượng",
+      "cảm giác",
+      "tri giác",
+      "biểu tượng",
+      "khái niệm",
+      "phán đoán",
+      "suy luận",
+      "kinh nghiệm",
+      "lý luận"
+    ]
+  },
+  "ChanLy": {
+    "topic_vi": "Chân lý",
+    "keywords": [
+      "chân lý",
+      "tiêu chuẩn của chân lý",
+      "tính khách quan của chân lý",
+      "tính tương đối",
+      "tính tuyệt đối",
+      "chân lý tuyệt đối",
+      "chân lý tương đối",
+      "sai lầm",
+      "thực tiễn là tiêu chuẩn"
+    ]
+  },
+  "QuyLuatBienChung": {
+    "topic_vi": "Các quy luật biện chứng",
+    "keywords": [
+      "quy luật",
+      "biện chứng",
+      "lượng và chất",
+      "quy luật lượng chất",
+      "phủ định của phủ định",
+      "thống nhất và đấu tranh của các mặt đối lập",
+      "mâu thuẫn",
+      "mặt đối lập",
+      "bước nhảy",
+      "điểm nút",
+      "phủ định biện chứng"
+    ]
+  },
+  "PhepBienChung_PhamTru": {
+    "topic_vi": "Phạm trù phép biện chứng",
+    "keywords": [
+      "phạm trù",
+      "nguyên nhân",
+      "kết quả",
+      "tất nhiên",
+      "ngẫu nhiên",
+      "nội dung",
+      "hình thức",
+      "bản chất",
+      "hiện tượng",
+      "khả năng",
+      "hiện thực"
+    ]
+  },
+  "XH_GiaiCap_NhaNuoc": {
+    "topic_vi": "Xã hội, giai cấp, nhà nước",
+    "keywords": [
+      "giai cấp",
+      "nhà nước",
+      "đấu tranh giai cấp",
+      "cách mạng",
+      "tầng lớp",
+      "dân tộc",
+      "hình thái kinh tế - xã hội",
+      "lực lượng sản xuất",
+      "quan hệ sản xuất",
+      "cơ sở hạ tầng",
+      "kiến trúc thượng tầng"
+    ]
+  }
+}
